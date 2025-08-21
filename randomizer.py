@@ -4,7 +4,6 @@ from pathlib import Path
 
 DATA_FILE = Path("pool.json")
 
-# ===== Data Layer =====
 def load_data():
     if DATA_FILE.exists():
         with open(DATA_FILE, "r", encoding="utf-8") as f:
@@ -16,14 +15,13 @@ def save_data(data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 data = load_data()
-items = data["items"]         # list of {"name": str, "weight": float}
-history = data["history"]     # list of {"pick": list[str]}
+items = data["items"]         
+history = data["history"]     
 seed = data.get("seed")
 
 if seed is not None:
     random.seed(seed)
 
-# ===== Helpers =====
 def find_item(name):
     name_norm = name.strip().lower()
     for i, it in enumerate(items):
@@ -44,7 +42,7 @@ def show_history():
         print("History is empty.")
         return
     print("\n--- HISTORY ---")
-    for i, h in enumerate(history[-20:], 1):  # last 20 picks
+    for i, h in enumerate(history[-20:], 1): 
         print(f"{i}. {', '.join(h['pick'])}")
 
 def add_item():
@@ -137,7 +135,7 @@ def set_seed():
     try:
         seed = int(s)
     except ValueError:
-        seed = s  # allow string as seed
+        seed = s  
     random.seed(seed)
     data["seed"] = seed
     print(f"Seed set to: {seed}")
@@ -151,7 +149,6 @@ def autosave():
     data["history"] = history
     save_data(data)
 
-# ===== Menu Loop =====
 def main_menu():
     while True:
         print("\n=== RANDOMIZER ===")
@@ -196,3 +193,4 @@ def main_menu():
 
 if __name__ == "__main__":
     main_menu()
+
